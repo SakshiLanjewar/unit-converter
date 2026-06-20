@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Unit Converter — Precision Instrument</title>
+<meta name="description" content="Convert length, weight, temperature, volume, area, speed, time, data, energy and pressure with a precision-instrument styled converter." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Ruler-tick masthead: the converter's signature motif -->
+  <header class="masthead">
+    <div class="ruler-strip" aria-hidden="true"></div>
+    <div class="masthead-inner">
+      <p class="eyebrow">MODEL UC&#8209;10 &middot; 10 SCALES</p>
+      <h1>Unit Converter</h1>
+      <p class="subtitle">A small precision instrument for length, mass, temperature, volume, area, speed, time, data, energy &amp; pressure.</p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Category dial -->
+    <nav class="category-rail" id="categoryRail" aria-label="Conversion category">
+      <!-- populated by script.js -->
+    </nav>
+
+    <!-- The instrument: two readout ports + swap dial -->
+    <section class="converter-panel" aria-label="Converter">
+
+      <div class="port port-from">
+        <label class="port-label" for="fromUnit">From</label>
+        <select id="fromUnit" class="unit-select"></select>
+        <input
+          id="inputValue"
+          class="value-input"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          spellcheck="false"
+          value="1"
+          aria-label="Value to convert"
+        />
+      </div>
+
+      <button id="swapBtn" class="swap-dial" type="button" aria-label="Swap from and to units" title="Swap units">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M7 7h11l-3.2-3.2M17 17H6l3.2 3.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="port port-to">
+        <label class="port-label" for="toUnit">To</label>
+        <select id="toUnit" class="unit-select"></select>
+        <div class="readout" id="resultReadout" role="status" aria-live="polite">
+          <span id="resultText">&mdash;</span>
+        </div>
+        <button id="copyBtn" class="copy-btn" type="button">Copy</button>
+      </div>
+
+    </section>
+
+    <p class="formula-line" id="formulaLine">&nbsp;</p>
+    <p class="error-line" id="errorLine" role="alert"></p>
+
+    <!-- Conversion log -->
+    <section class="history-panel" aria-label="Conversion history">
+      <div class="history-header">
+        <h2>Conversion Log</h2>
+        <button id="clearHistoryBtn" class="text-btn" type="button">Clear</button>
+      </div>
+      <ul id="historyList" class="history-list">
+        <li class="history-empty" id="historyEmpty">No conversions logged yet — your last 10 will appear here.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="page-footer">
+    <span>Built with Python (Flask) &middot; HTML &middot; CSS &middot; JS</span>
+  </footer>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
