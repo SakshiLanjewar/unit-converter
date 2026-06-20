@@ -8,6 +8,7 @@ input, display, and talking to that API.
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.x-black)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![CI](https://github.com/SakshiLanjewar/unit-converter/actions/workflows/ci.yml/badge.svg)
 
 ---
 
@@ -53,9 +54,12 @@ unit-converter/
 ├── tests/
 │   └── test_app.py          # Automated test suite (pytest)
 ├── app.py                   # Flask app: routes + all conversion logic
-├── requirements.txt         # Runtime dependencies
+├── conftest.py              # Empty file — lets pytest resolve `import app`
+├── Procfile                 # Tells a host (e.g. Render) how to start the app
+├── requirements.txt         # Runtime dependencies (Flask, gunicorn)
 ├── requirements-dev.txt     # Runtime + test dependencies (pytest)
 ├── .gitignore
+├── .gitattributes
 ├── LICENSE                  # MIT
 ├── README.md
 ├── templates/
@@ -111,8 +115,8 @@ python app.py
 Then open **http://127.0.0.1:5000** in your browser.
 
 > The app runs in debug mode by default for local development (auto-reload
-> on file changes). For any real deployment, run it behind a production WSGI
-> server (e.g. `gunicorn app:app`) and turn debug mode off.
+> on file changes). See [Deployment](#deployment) below for running it in
+> production.
 
 ## API reference
 
@@ -208,6 +212,10 @@ pip install -r requirements-dev.txt
 pytest -v
 ```
 
+> The empty `conftest.py` at the project root exists so pytest adds the
+> project root to `sys.path` — without it, `tests/test_app.py` can't
+> `import app` since it lives one directory up.
+
 A GitHub Actions workflow (`.github/workflows/ci.yml`) runs this same suite
 automatically on every push and pull request against `main`, on Python 3.9,
 3.11, and 3.12 — so any change that breaks something is caught before it's
@@ -226,6 +234,42 @@ it instead of just running it locally:
 ```bash
 FLASK_DEBUG=0 PORT=8080 python app.py
 ```
+
+## Deployment
+
+The app is deployment-ready out of the box:
+
+- **`requirements.txt`** includes [`gunicorn`](https://gunicorn.org/), a
+  production-grade WSGI server (Flask's built-in dev server is fine for
+  local use but isn't meant to serve real traffic).
+- **`Procfile`** tells a hosting platform how to start the app in
+  production:
+  ```
+  web: gunicorn app:app
+  ```
+
+### Deploying to Render (free)
+
+1. Push this repo to GitHub.
+2. On [render.com](https://render.com), create a **New Web Service** and
+   connect this repo.
+3. Configure:
+   | Field | Value |
+   |---|---|
+   | Build Command | `pip install -r requirements.txt` |
+   | Start Command | `gunicorn app:app` |
+   | Instance Type | Free |
+4. Add an environment variable: `FLASK_DEBUG=0`.
+5. Click **Create Web Service**. Render builds and deploys automatically,
+   and redeploys on every future push to `main`.
+
+> Render's free tier sleeps after ~15 minutes of inactivity; the first
+> request after that takes 30–50s to "wake" the service back up. This is
+> fine for personal/portfolio projects; a paid tier removes the sleep.
+
+The same `Procfile` / `gunicorn app:app` setup works on most other
+Python-friendly hosts (Railway, Heroku, Fly.io, PythonAnywhere, etc.) with
+minor platform-specific configuration.
 
 ## Possible extensions
 
