@@ -5,6 +5,11 @@ backend and **HTML/CSS/JavaScript** on the frontend. All conversion math runs in
 Python and is exposed through a small JSON API; the browser only handles
 input, display, and talking to that API.
 
+### 🔗 [Live Demo](https://unit-converter-3r3j.onrender.com/)
+
+> Hosted on Render's free tier — if it's been idle for a while, the first
+> load can take 30–50s to "wake up." It'll be fast after that.
+
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.x-black)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -249,7 +254,11 @@ FLASK_DEBUG=0 PORT=8080 python app.py
 
 ## Deployment
 
-The app is deployment-ready out of the box:
+This app is **already deployed and live**:
+👉 **https://unit-converter-3r3j.onrender.com/**
+
+The app is deployment-ready out of the box, so you can deploy your own copy
+too:
 
 - **`requirements.txt`** includes [`gunicorn`](https://gunicorn.org/), a
   production-grade WSGI server (Flask's built-in dev server is fine for
