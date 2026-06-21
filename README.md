@@ -291,5 +291,4 @@ minor platform-specific configuration.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Before pushing to GitHub, open `LICENSE` and
-replace `Your Name` with your actual name or GitHub username.
+MIT — see [LICENSE](LICENSE).
