@@ -33,6 +33,25 @@
   --font-mono: "JetBrains Mono", monospace;
 }
 
+:root[data-theme="dark"] {
+  --paper: #0F1A26;
+  --paper-deep: #16222F;
+  --grid-line: rgba(255, 255, 255, 0.05);
+  --grid-line-strong: rgba(255, 255, 255, 0.13);
+  --ink: #E9EFF4;
+  --ink-soft: #9FB2C2;
+  --ink-faint: #5C7287;
+  --accent: #E2683F;
+  --accent-dark: #C9542C;
+  --accent-teal: #34B698;
+  --readout-bg: #060C13;
+  --readout-bg-deep: #02060A;
+  --readout-text: #8FE3C7;
+  --readout-text-dim: #2C463E;
+  --white: #182431;
+  --error: #FF6B5B;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -53,6 +72,7 @@ body {
   font-family: var(--font-body);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .page {
@@ -100,6 +120,53 @@ body {
 .masthead-inner {
   border-bottom: 1px solid var(--grid-line-strong);
   padding-bottom: 22px;
+  transition: border-color 0.25s ease;
+}
+
+.masthead-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--white);
+  border: 1px solid var(--grid-line-strong);
+  border-radius: 999px;
+  padding: 6px 13px 6px 11px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--ink-faint);
+  color: var(--ink);
+}
+
+.theme-toggle svg {
+  flex-shrink: 0;
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  display: inline-flex;
 }
 
 .eyebrow {
@@ -169,7 +236,8 @@ body {
 .value-input:focus-visible,
 .swap-dial:focus-visible,
 .copy-btn:focus-visible,
-.text-btn:focus-visible {
+.text-btn:focus-visible,
+.theme-toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -186,6 +254,7 @@ body {
   border-radius: var(--radius-md);
   padding: 22px;
   box-shadow: 0 1px 0 rgba(22, 38, 61, 0.04);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .port {
@@ -220,6 +289,7 @@ body {
   background-position: calc(100% - 16px) center, calc(100% - 11px) center;
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 .value-input {
@@ -233,6 +303,7 @@ body {
   padding: 12px 12px;
   width: 100%;
   letter-spacing: 0.01em;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .value-input::selection {

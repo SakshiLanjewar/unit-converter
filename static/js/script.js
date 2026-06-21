@@ -24,6 +24,7 @@
   const historyList = document.getElementById("historyList");
   const historyEmpty = document.getElementById("historyEmpty");
   const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+  const themeToggle = document.getElementById("themeToggle");
 
   // ---------------------------------------------------------------------
   // State
@@ -34,6 +35,7 @@
 
   const HISTORY_KEY = "unitConverterHistory.v1";
   const MAX_HISTORY = 10;
+  const THEME_KEY = "unitConverterTheme.v1";
 
   // Sensible starting unit pairs per category, purely for a nicer first
   // impression — any pair can be picked afterwards.
@@ -390,6 +392,62 @@
   }
 
   // ---------------------------------------------------------------------
+  // Theme (dark / light)
+  // ---------------------------------------------------------------------
+
+  function syncThemeToggleUI(theme) {
+    if (!themeToggle) return;
+    themeToggle.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+    const label = themeToggle.querySelector(".theme-toggle-label");
+    if (label) label.textContent = theme === "dark" ? "Light" : "Dark";
+  }
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch (err) {
+      // Storage unavailable (private browsing, quota) — theme just won't persist.
+    }
+    syncThemeToggleUI(theme);
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    setTheme(current === "dark" ? "light" : "dark");
+  }
+
+  function initTheme() {
+    // The inline script in <head> already set data-theme before paint to
+    // avoid a flash of the wrong theme — just sync the button to match it.
+    const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    syncThemeToggleUI(current);
+
+    if (themeToggle) {
+      themeToggle.addEventListener("click", toggleTheme);
+    }
+
+    // Follow the OS-level preference live, but only if the person hasn't
+    // explicitly chosen a theme of their own.
+    if (window.matchMedia) {
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleChange = (e) => {
+        let hasManualChoice = false;
+        try {
+          hasManualChoice = localStorage.getItem(THEME_KEY) !== null;
+        } catch (err) {
+          hasManualChoice = false;
+        }
+        if (!hasManualChoice) {
+          document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
+          syncThemeToggleUI(e.matches ? "dark" : "light");
+        }
+      };
+      if (media.addEventListener) media.addEventListener("change", handleChange);
+    }
+  }
+
+  // ---------------------------------------------------------------------
   // Events
   // ---------------------------------------------------------------------
 
@@ -419,4 +477,5 @@
 
   loadHistory();
   loadCategories();
+  initTheme();
 })();

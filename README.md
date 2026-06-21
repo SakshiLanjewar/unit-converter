@@ -10,6 +10,15 @@ input, display, and talking to that API.
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![CI](https://github.com/SakshiLanjewar/unit-converter/actions/workflows/ci.yml/badge.svg)
 
+![Unit Converter screenshot](assets/screenshot.png)
+
+<details>
+<summary>Dark mode</summary>
+
+![Unit Converter dark mode screenshot](assets/screenshot-dark.png)
+
+</details>
+
 ---
 
 ## Features
@@ -22,6 +31,9 @@ input, display, and talking to that API.
   offset conversions, not linear factors, with an absolute-zero guard.
 - **Live conversion** — results update automatically as you type (debounced)
   or change a unit, no "Convert" button needed.
+- **Light/dark theme toggle** — top-right switch in the header; remembers
+  your choice (`localStorage`) and otherwise follows your OS preference, with
+  no flash of the wrong theme on load.
 - **Swap button** to instantly flip the From/To units.
 - **Copy result** to the clipboard in one click.
 - **Conversion log** — keeps your last 10 conversions, saved in the browser
@@ -274,7 +286,6 @@ minor platform-specific configuration.
 ## Possible extensions
 
 - Add more categories (currency, angle, fuel economy, cooking units)
-- Add a dark theme toggle
 - Add a "favorite conversions" pinned list
 - Package as a desktop app (e.g. with PyInstaller) or a PWA
 
